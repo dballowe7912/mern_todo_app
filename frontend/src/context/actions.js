@@ -1,0 +1,4 @@
+export const GET_TASKS_BEGIN = 'GET_TASKS_BEGIN'
+export const GET_TASKS_SUCCESS = 'GET_TASKS_SUCCESS'
+export const GET_TASKS_ERROR = 'GET_TASKS_ERROR'
+export const ADD_TASK = 'ADD_TASK'

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useTasksContext } from '../context/taskContext'
 
 const Form = (props) => {
     const [ name, setName ] = useState('')
+    const { addTask } = useTasksContext()
 
     const handleChange = (e) => {
         setName(e.target.value)
@@ -10,7 +12,7 @@ const Form = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        props.addTask(name)
+        addTask(name)
         setName('')
     }
 

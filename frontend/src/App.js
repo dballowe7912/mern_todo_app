@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { nanoid } from 'nanoid'
+
 import FilterButton from './components/FilterButton';
 import Todo from './components/Todo';
 import Form from './components/Form';
 import axios from 'axios';
-
-const TaskContext = React.createContext(); 
+import { useTasksContext } from './context/taskContext';
 
 const FILTER_MAP = {
   All: () => true,
@@ -16,36 +15,24 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP)
 
 function App(props) {
+  let { tasks, fetchTasks } = useTasksContext()
+  
 
-  const [ tasks, setTasks ] = useState([])
   const [filter, setFilter] = useState("All")
 
-  const fetchTasks = async () => {
-    await axios.get('/api/tasks')
-    .then(res => {
-      const taskdata = res.data.tasks;
-      setTasks(taskdata)
-      console.log(taskdata)
-    })
-  }
-
-  useEffect(() => {
-    fetchTasks()
-  }, [tasks.length])
-
-  const addTask = async (name) => {
-    await axios.post('/api/tasks', { name })
-    fetchTasks()
-  }
+  // const addTask = async (name) => {
+  //   await axios.post('/api/tasks', { name })
+  //   fetchTasks()
+  // }
 
   const deleteTask = async (id) => {
     await axios.delete(`/api/tasks/${id}`)
-    fetchTasks()
+    // fetchTasks()
   }
 
   const editTask = async (id, name) => {
     await axios.put(`/api/tasks/${id}`, {name, completed: false})
-    fetchTasks()
+    // fetchTasks()
   }
 
   const toggleTaskCompleted = async (id) => {
@@ -57,7 +44,7 @@ function App(props) {
 
     await axios.put(`/api/tasks/${id}`, {name, completed:!completed})
     console.log(name, completed)
-    fetchTasks()
+    // fetchTasks()
   }
 
   const taskList = tasks
@@ -87,22 +74,20 @@ function App(props) {
   const headingText = `${tasks.length} ${tasksNoun} remaining`
 
   return (
-    <TaskContext.Provider value='hi'>
-      <div className="todoapp stack-large">
-        <h1>Todo</h1>
-          <Form addTask={addTask}/>
-        <div className="filters btn-group stack-exception">
-          {filterList}
-        </div>
-        <h2 id="list-heading">{headingText}</h2>
-        <ul
-          className="todo-list stack-large stack-exception"
-          aria-labelledby="list-heading"
-        >
-          {taskList}
-        </ul>
+    <div className="todoapp stack-large">
+      <h1>Todo</h1>
+        <Form />
+      <div className="filters btn-group stack-exception">
+        {filterList}
       </div>
-    </TaskContext.Provider>
+      <h2 id="list-heading">{headingText}</h2>
+      <ul
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading"
+      >
+        {taskList}
+      </ul>
+    </div>
   )
 }
 

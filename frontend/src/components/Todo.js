@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useTasksContext } from '../context/taskContext'
 
 const Todo = (props) => {
 
   const [ isEditing, setIsEditing ] = useState(false)
   const [ newName, setNewName ] = useState('')
+  const { deleteTask } = useTasksContext()
 
   const handleChange = (e) => {
     setNewName(e.target.value)
@@ -73,7 +75,7 @@ const Todo = (props) => {
         <button
           type="button"
           className="btn btn__danger"
-          onClick={() => props.deleteTask(props.id)}
+          onClick={() => deleteTask(props.id)}
         >
           Delete <span className="visually-hidden">{props.name}</span>
         </button>
