@@ -37,21 +37,36 @@ export const TasksProvider = ({ children }) => {
 
     const addTask = async (name) => {
         await axios.post('/api/tasks', { name })
-        fetchTasks()
     }
 
     const deleteTask = async (id) => {
         await axios.delete(`/api/tasks/${id}`)
-        fetchTasks()
-      }
+    }
+
+    const editTask = async (id, name) => {
+        await axios.put(`/api/tasks/${id}`, {name, completed: false})
+    }
+
+    const toggleTaskCompleted = async (id) => {
+        const name = await axios.get(`/api/tasks/${id}`)
+        .then(res => res.data.name)
+
+        const completed = await axios.get(`/api/tasks/${id}`)
+        .then(res => res.data.completed)
+
+        await axios.put(`/api/tasks/${id}`, {name, completed:!completed})
+        await console.log(name, completed)
+    }
 
     return (
-        <TasksContext.Provider 
-            value={{ 
-                ...state, 
-                fetchTasks, 
+        <TasksContext.Provider
+            value={{
+                ...state,
+                fetchTasks,
                 addTask,
-                deleteTask
+                deleteTask,
+                editTask,
+                toggleTaskCompleted
             }}>
             { children }
         </TasksContext.Provider>
@@ -61,4 +76,3 @@ export const TasksProvider = ({ children }) => {
 export const useTasksContext = () => {
     return useContext(TasksContext)
 }
-
