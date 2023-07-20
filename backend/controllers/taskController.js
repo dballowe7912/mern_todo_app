@@ -50,10 +50,10 @@ const deleteTask = asyncHandler(async (req, res) => {
 })
 
 // @desc   Update task
-// @route  PUT /api/tasks/:id 
+// @route  PUT /api/tasks/:id
 const updateTask = asyncHandler(async (req, res) => {
     const { name, completed } = req.body
-    console.log(name, completed)
+
     const task = await Task.findById(req.params.id)
 
     if (task) {
@@ -67,7 +67,7 @@ const updateTask = asyncHandler(async (req, res) => {
     }
 })
 
-export {  
+export {
     getTasks,
     createTask,
     getTaskById,

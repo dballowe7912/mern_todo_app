@@ -55,7 +55,6 @@ export const TasksProvider = ({ children }) => {
         .then(res => res.data.completed)
 
         await axios.put(`/api/tasks/${id}`, {name, completed:!completed})
-        await console.log(name, completed)
     }
 
     return (
